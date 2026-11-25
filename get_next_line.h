@@ -17,7 +17,7 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#	define BUFFER_SIZE 42
+#  define BUFFER_SIZE 42
 # endif // !BUFFER_SIZE
 
 char	*get_next_line(int fd);
@@ -28,4 +28,3 @@ void	shift(char *buffer);
 char	*extract(char *buffer);
 
 #endif
-

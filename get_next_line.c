@@ -11,14 +11,12 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-#include <unistd.h>
 
 char	*get_next_line(int fd)
 {
 	static char		buffer[BUFFER_SIZE + 1];
-	char			*line;
 	ssize_t			read_val;
+	char			*line;
 
 	read_val = BUFFER_SIZE;
 	line = NULL;
@@ -31,10 +29,10 @@ char	*get_next_line(int fd)
 	while (read_val > 0)
 	{
 		if (newline_pos(buffer) != (size_t)-1)
-			return(extract(ft_strjoin(line, buffer)));
+			return (extract(ft_strjoin(line, buffer)));
 		line = ft_strjoin(line, buffer);
-	   	read_val = read(fd, buffer, BUFFER_SIZE);
-	   	if (read_val == 0)
+		read_val = read(fd, buffer, BUFFER_SIZE);
+		if (read_val == 0)
 			return (line);
 		if (read_val < 0)
 			return (free(line), NULL);
@@ -44,6 +42,8 @@ char	*get_next_line(int fd)
 }
 /*
 #include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
 int	main(int argc, char *arg[])
 {
 	int		ft_open;

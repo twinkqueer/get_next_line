@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
 size_t	newline_pos(const char *s)
 {
@@ -65,20 +64,21 @@ char	*extract(char *buffer)
 
 void	shift(char *buffer)
 {
-	ssize_t	i;
-	ssize_t	shift;
+	size_t	i;
+	size_t	shift;
 
 	shift = newline_pos(buffer);
 	i = 0;
-	if (shift == -1) // if it doesn't find a newline, wipe the entire buffer so it can be refilled
-	{	
-		while (buffer[i]) {
+	if (shift == (size_t)-1)
+	{
+		while (buffer[i])
+		{
 			buffer[i] = 0;
 			i++;
-		}	
+		}
 		return ;
 	}
-	while (buffer[shift + i + 1]) // otherwise shift it
+	while (buffer[shift + i + 1])
 	{
 		buffer[i] = buffer[shift + i + 1];
 		i++;
@@ -103,7 +103,7 @@ char	*ft_strjoin(char *s1, char *s2)
 		i++;
 	}
 	j = 0;
-	while(j < ft_strlen(s2))
+	while (j < ft_strlen(s2))
 	{
 		res[i + j] = s2[j];
 		j++;
@@ -113,5 +113,3 @@ char	*ft_strjoin(char *s1, char *s2)
 	shift(s2);
 	return (res);
 }
-
-
