@@ -11,19 +11,22 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+#include <stdio.h>
 
-char	*ft_strchr(const char *s, int c)
+size_t	newline_pos(const char *s)
 {
+	size_t	i;
+
+	i = 0;
 	if (s == NULL)
-		return (NULL);
-	while (*s)
+		return (-2);
+	while (s[i])
 	{
-		if (*s++ == (char)c)
-			return ((char *)--s);
+		if (s[i] == '\n')
+			return (i);
+		i++;
 	}
-	if (*s == (char)c)
-		return ((char *)s);
-	return (NULL);
+	return (-1);
 }
 
 int	ft_strlen(const char *s)
@@ -40,52 +43,50 @@ int	ft_strlen(const char *s)
 
 char	*extract(char *buffer)
 {
-	char	*newline;
+	ssize_t	newline;
 	int		line_len;
 	char	*line;
 	int		i;
 
-	i = 0;
-	newline = ft_strchr(buffer, '\n');
-	if (newline)
-		line_len = newline - buffer + 1;
-	else
+	newline = newline_pos(buffer);
+	line_len = ft_strlen(buffer);
+	if (newline > -1)
+		line_len = newline + 1;
+	if (newline == -1)
 		line_len = ft_strlen(buffer);
 	line = malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
-	while (i < line_len)
-	{
+	i = -1;
+	while (++i < line_len)
 		line[i] = buffer[i];
-		i++;
-	}
 	line[i] = '\0';
+//	printf("Extracted line: [%s]", line);
 	return (line);
 }
 
-char	*update_buffer(char *buffer)
+void	shift(char *buffer)
 {
-	char	*newline;
-	char	*dupe;
-	char	*duped;
-	int		i;
-	
+	ssize_t	i;
+	ssize_t	shift;
+
+	shift = newline_pos(buffer);
 	i = 0;
-	newline = ft_strchr(buffer, '\n');
-	if (!newline || !*(newline + 1))
-		return (free(buffer), NULL);
-	dupe = newline + 1;
-	duped = malloc(sizeof(char) * ft_strlen(dupe) + 1);
-	if (!duped)
-		return (free(buffer), NULL);
-	while(i < ft_strlen(dupe))
+	if (shift == -1) // if it doesn't find a newline, wipe the entire buffer so it can be refilled
+	{	
+		while (buffer[i]) {
+			buffer[i] = 0;
+			i++;
+		}	
+		return ;
+	}
+	while (buffer[shift + i + 1]) // otherwise shift it
 	{
-		duped[i] = dupe[i];
+		buffer[i] = buffer[shift + i + 1];
 		i++;
 	}
-	duped[i] = '\0';
-	free(buffer);
-	return (duped);
+	buffer[i] = buffer[shift + i + 1];
+	buffer[i++] = '\0';
 }
 
 char	*ft_strjoin(char *s1, char *s2)

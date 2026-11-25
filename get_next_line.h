@@ -17,14 +17,14 @@
 # include <unistd.h>
 
 # ifndef BUFFER_SIZE
-#	define BUFFER_SIZE BUFSIZE
+#	define BUFFER_SIZE 42
 # endif // !BUFFER_SIZE
 
 char	*get_next_line(int fd);
-char	*ft_strchr(const char *s, int c);
+size_t	newline_pos(const char *s);
 int		ft_strlen(const char *s);
 char	*ft_strjoin(char *s1, char *s2);
-char	*update_buffer(char *buffer);
+void	shift(char *buffer);
 char	*extract(char *buffer);
 
 #endif
