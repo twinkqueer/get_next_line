@@ -92,24 +92,26 @@ char	*ft_strjoin(char *s1, char *s2)
 	char	*res;
 	int		i;
 	int		j;
+	int		len1;
+	int		len2;
 
-	res = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	len1 = ft_strlen(s1);
+	len2 = ft_strlen(s2);
+	res = malloc(sizeof(char) * (len1 + len2 + 1));
 	if (res == NULL)
 		return (NULL);
 	i = 0;
-	while (i < ft_strlen(s1))
+	while (i < len1)
 	{
 		res[i] = s1[i];
 		i++;
 	}
 	j = 0;
-	while (j < ft_strlen(s2))
+	while (j < len2)
 	{
 		res[i + j] = s2[j];
 		j++;
 	}
 	res[i + j] = '\0';
-	free(s1);
-	shift(s2);
-	return (res);
+	return (free(s1), shift(s2), res);
 }
