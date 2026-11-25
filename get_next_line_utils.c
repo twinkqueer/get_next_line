@@ -52,8 +52,6 @@ char	*extract(char *buffer)
 	line_len = ft_strlen(buffer);
 	if (newline > -1)
 		line_len = newline + 1;
-	if (newline == -1)
-		line_len = ft_strlen(buffer);
 	line = malloc(sizeof(char) * (line_len + 1));
 	if (!line)
 		return (NULL);
@@ -61,7 +59,7 @@ char	*extract(char *buffer)
 	while (++i < line_len)
 		line[i] = buffer[i];
 	line[i] = '\0';
-//	printf("Extracted line: [%s]", line);
+	free(buffer);
 	return (line);
 }
 
@@ -112,6 +110,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	}
 	res[i + j] = '\0';
 	free(s1);
+	shift(s2);
 	return (res);
 }
 

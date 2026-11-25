@@ -18,49 +18,31 @@ char	*get_next_line(int fd)
 {
 	static char		buffer[BUFFER_SIZE + 1];
 	char			*line;
-	char			*extracted;
 	ssize_t			read_val;
 
-	read_val = 1;
+	read_val = BUFFER_SIZE;
 	line = NULL;
-	extracted = NULL;
 	if (buffer[0] == 0)
+	{
 		read_val = read(fd, buffer, BUFFER_SIZE);
+		if (read_val > 0)
+			buffer[read_val] = '\0';
+	}
 	while (read_val > 0)
 	{
 		if (newline_pos(buffer) != (size_t)-1)
-		{
-		//	printf("[ newline pos is over -1 (found newline) ]\n");
-			line = ft_strjoin(line, buffer);
-		//	printf("[ FOUND NEWLINE: strjoined line: %s ]\n", line);
-			extracted = extract(line);
-		//	printf("[ FOUND NEWLINE: extracted line: %s ]\n", extracted);
-			free(line);
-			shift(buffer);
-			return(extracted);
-		}
-		else
-		{
-		//	printf("[ current newline pos: %ld (this only calls if its supposedly -1) ]\n", newline_pos(buffer));
-			if (read_val == BUFFER_SIZE)
-			{
-		//		printf("[ -1 nl: read_val is equal to buffer size ]\n");
-				line = ft_strjoin(line, buffer);
-		//		printf("[ -1 nl: joined line: %s ]\n", line);
-				shift(buffer);
-			}
-		}
+			return(extract(ft_strjoin(line, buffer)));
+		line = ft_strjoin(line, buffer);
 	   	read_val = read(fd, buffer, BUFFER_SIZE);
 	   	if (read_val == 0)
-	   	{
-	   	//	printf("read_val is 0");
 			return (line);
-	   	}
 		if (read_val < 0)
 			return (free(line), NULL);
+		buffer[read_val] = '\0';
 	}
 	return (NULL);
 }
+/*
 #include <stdlib.h>
 int	main(int argc, char *arg[])
 {
@@ -83,3 +65,4 @@ int	main(int argc, char *arg[])
 	close(ft_open);
 	return (0);
 }
+*/
